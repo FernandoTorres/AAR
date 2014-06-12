@@ -8,9 +8,9 @@
  Para dejar libre(?)               '3' por el serial
  */
 
-int EN   = 2;
-int Auno = 3;
-int Ados = 4;
+int EN   = 4;
+int Auno = 5;
+int Ados = 6;
 
 char instruction;
 
