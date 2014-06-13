@@ -28,20 +28,21 @@ void moverDer( int registerFlag){
     digitalWrite( Ados, LOW);
   }
   else if( registerFlag == 1){
-    PORTD = PORTD | B00110000;
+    
+    PORTD = B10111111 & (PORTD | B00110000);
   }
   delay( timeDelay);
   detener();
 }
 
-void moverIzq(){
+void moverIzq(int registerFlag){
   if( registerFlag == 0){
     digitalWrite( EN, HIGH);
     digitalWrite( Auno, LOW);
     digitalWrite( Ados, HIGH);
   }
   else if( registerFlag == 1){
-    PORTD = PORTD | B01010000;
+    PORTD = B11011111 & (PORTD |B01010000);
   }
   delay( timeDelay);
   detener();
@@ -65,14 +66,17 @@ void setup(){
 
 void loop(){
   if ( digitalRead( pinDer) == HIGH){
+    Serial.println("Boton Derecho");
     moverDer( registerFlag);
   }
   else if ( digitalRead( pinIzq) == HIGH){
+    Serial.println("Boton Izquierdo");
     moverIzq( registerFlag);
   }
   else {
     detener();
   }
+  Serial.flush();
 }
 
 
