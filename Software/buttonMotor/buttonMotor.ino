@@ -6,72 +6,56 @@
  un tiempo determinado.
  */
 
+/*
+v0.2
+ ====
+ */
 
-int pinDer = 2;
+int pinDer = 2;// pines para los motores
 int pinIzq = 3;
 
-int EN   = 4;
+int EN   = 4;// pines para el puenteH
 int Auno = 5;
 int Ados = 6;
 
-int timeDelay = 2000;
+int timeDelay = 500;//tiempo para mover el motor
 
-// Variable "registerFlag" que determina si el puente H sera 
-// activado con digitalWrite() o on registros
-int registerFlag = 1; // 0 -> digitalWrite | 1 -> registros
-
-/* Funciones auxiliares */
-void moverDer( int registerFlag){
-  if( registerFlag == 0){
-    digitalWrite( EN, HIGH);
-    digitalWrite( Auno, HIGH);
-    digitalWrite( Ados, LOW);
-  }
-  else if( registerFlag == 1){
-    
-    PORTD = B10111111 & (PORTD | B00110000);
-  }
+/*
+Funciones auxiliares
+ ====================
+ */
+void moverDer(){
+  PORTD = B10111111 & (PORTD | B00110000);
   delay( timeDelay);
   detener();
 }
 
-void moverIzq(int registerFlag){
-  if( registerFlag == 0){
-    digitalWrite( EN, HIGH);
-    digitalWrite( Auno, LOW);
-    digitalWrite( Ados, HIGH);
-  }
-  else if( registerFlag == 1){
-    PORTD = B11011111 & (PORTD |B01010000);
-  }
+void moverIzq(){
+  PORTD = B11011111 & (PORTD | B01010000);
   delay( timeDelay);
   detener();
 }
 
 void detener(){
-  digitalWrite( EN, LOW);
+  PORTD &= B10001111;
 }
 
-/* Funciones principales */
+
+/*
+Funciones principales 
+ =====================
+ */
 void setup(){
   Serial.begin( 9600);
-
-  pinMode(   EN, OUTPUT);
-  pinMode( Auno, OUTPUT);
-  pinMode( Ados, OUTPUT);
-
-  pinMode( pinDer, INPUT);
-  pinMode( pinIzq, INPUT);
+  DDRD = B11110011 & (DDRD | B01110000);
 }
 
 void loop(){
   if ( digitalRead( pinDer) == HIGH){
-    Serial.println("Boton Derecho");
-    moverDer( registerFlag);
+    moverDer();
   }
   else if ( digitalRead( pinIzq) == HIGH){
-    Serial.println("Boton Izquierdo");
-    moverIzq( registerFlag);
+    moverIzq();
   }
   else {
     detener();
@@ -79,7 +63,68 @@ void loop(){
   Serial.flush();
 }
 
-
-
+/*
+v0.1
+ ====
+ 
+ // Variable "registerFlag" que determina si el puente H sera 
+ // activado con digitalWrite() o on registros
+ int registerFlag = 1; // 0 -> digitalWrite | 1 -> registros
+ 
+ void moverDer( int registerFlag){
+ if( registerFlag == 0){
+ digitalWrite( EN, HIGH);
+ digitalWrite( Auno, HIGH);
+ digitalWrite( Ados, LOW);
+ }
+ else if( registerFlag == 1){ 
+ PORTD = B10111111 & (PORTD | B00110000);
+ }
+ delay( timeDelay);
+ detener();
+ }
+ 
+ void moverIzq(int registerFlag){
+ if( registerFlag == 0){
+ digitalWrite( EN, HIGH);
+ digitalWrite( Auno, LOW);
+ digitalWrite( Ados, HIGH);
+ }
+ else if( registerFlag == 1){
+ PORTD = B11011111 & (PORTD | B01010000);
+ }
+ delay( timeDelay);
+ detener();
+ }
+ 
+ void detener(){
+ digitalWrite( EN, LOW);
+ }
+ 
+ void setup(){
+ Serial.begin( 9600);
+ pinMode(   EN, OUTPUT);
+ pinMode( Auno, OUTPUT);
+ pinMode( Ados, OUTPUT);
+ 
+ pinMode( pinDer, INPUT);
+ pinMode( pinIzq, INPUT);
+ }
+ 
+ void loop(){
+ if ( digitalRead( pinDer) == HIGH){
+ Serial.println("Boton Derecho");
+ moverDer( registerFlag);
+ }
+ else if ( digitalRead( pinIzq) == HIGH){
+ Serial.println("Boton Izquierdo");
+ moverIzq( registerFlag);
+ }
+ else {
+ detener();
+ }
+ Serial.flush();
+ }
+ */
 
 
