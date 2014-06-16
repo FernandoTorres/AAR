@@ -16,8 +16,8 @@ int tiempoGracia = 100; // milisegudos
 pinSensor --> Lee la posicion de la cinta usando 
  un pull-down resistor
  
- GND --> 10kohm|---> pinSensor
- |---> 5V
+ GND --> 10kohm -|---> pinSensor
+                 |---> 5V
  */
 int pinSensor = 2;
 
@@ -31,7 +31,10 @@ int pinBotonIzq = 5;
 int pinBotonDer = 6;
 
 
-// Funciones auxiliares
+/***************************
+* * Funciones Auxiliares * *
+****************************/
+
 void moverIzq(){
   PORTD = B11101111 & (PORTD | B00001000);
   delay( tiempoGracia); // aca esperamos que el sensor marque LOW
@@ -53,7 +56,10 @@ void detener(){
 }
 
 
-// Funciones principales
+/****************************
+* * Funciones Principales * *
+****************************/
+
 void setup(){
   Serial.begin( 9600);
   DDRD = B10011000 & (DDRD | B00011000);
